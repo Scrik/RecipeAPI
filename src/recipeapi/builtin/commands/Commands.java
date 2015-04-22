@@ -21,7 +21,11 @@ public class Commands implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.RED + "Only player can use it command");
-			return false;
+			return true;
+		}
+		if (!sender.hasPermission("recipeapi.admin")) {
+			sender.sendMessage(ChatColor.RED + "No permission");
+			return true;
 		}
 		if (args.length == 1) {
 			switch (args[0]) {
