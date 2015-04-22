@@ -1,0 +1,6 @@
+name: RecipeAPI
+main: recipeapi.RecipeAPI
+version: 1.0
+author: _Shevchik_
+commands:
+  recipeapi:
