@@ -1,5 +1,6 @@
 package recipeapi.api.recipes;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,7 @@ public final class ShapedRecipe implements CustomRecipe {
 
 		private ItemStack result;
 		private String[] shape;
-		private HashMap<Character, Ingredient> ingredients = new HashMap<Character, Ingredient>();;
+		private HashMap<Character, Ingredient> ingredients = new HashMap<Character, Ingredient>();
 
 		public Builder setReuslt(ItemStack result) {
 			this.result = result;
@@ -66,6 +67,11 @@ public final class ShapedRecipe implements CustomRecipe {
 			return new ShapedRecipe(result, shape, ingredients);
 		}
 
+	}
+
+	@Override
+	public String toString() {
+		return "ShapedRecipe(Result: "+result+", Shape: "+Arrays.toString(shape)+", Ingredients: "+ingredients+")";
 	}
 
 }

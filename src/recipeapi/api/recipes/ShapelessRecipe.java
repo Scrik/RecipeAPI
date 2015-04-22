@@ -1,5 +1,7 @@
 package recipeapi.api.recipes;
 
+import java.util.Arrays;
+
 import org.bukkit.inventory.ItemStack;
 
 public final class ShapelessRecipe implements CustomRecipe {
@@ -18,6 +20,11 @@ public final class ShapelessRecipe implements CustomRecipe {
 
 	public Ingredient[] getIngredients() {
 		return ingredients.clone();
+	}
+
+	@Override
+	public String toString() {
+		return "ShapelessRecipe(Result: "+result+", Ingredients: "+Arrays.toString(ingredients)+")";
 	}
 
 }

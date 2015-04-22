@@ -9,4 +9,9 @@ public abstract class DynamicRecipe implements CustomRecipe {
 
 	public abstract ItemStack getResult(Player player, ItemStack[] currentItemsInCrafting);
 
+	@Override
+	public String toString() {
+		return "DynamicRecipe(Class: "+getClass().getName()+")";
+	}
+
 }

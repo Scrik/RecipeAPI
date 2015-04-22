@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import recipeapi.RecipeAPI;
+import recipeapi.api.recipes.CustomRecipe;
+import recipeapi.builtin.RecipesStorage;
 
 public class Commands implements CommandExecutor {
 
@@ -23,25 +25,32 @@ public class Commands implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Only player can use it command");
 			return true;
 		}
+		Player player = (Player) sender;
 		if (!sender.hasPermission("recipeapi.admin")) {
 			sender.sendMessage(ChatColor.RED + "No permission");
 			return true;
 		}
-		if (args.length == 1) {
+		if (args.length >= 1) {
 			switch (args[0]) {
 				case "remove": {
+					if (args.length == 2) {
+						RecipesStorage.getInstance().removeRecipe(RecipesStorage.getInstance().getRecipes().get(Integer.parseInt(args[1])));
+					}
 					break;
 				}
 				case "list": {
+					int count = 0;
+					for (CustomRecipe recipe : RecipesStorage.getInstance().getRecipes()) {
+						player.sendMessage(count+": "+recipe);
+						count++;
+					}
 					break;
 				}
 				case "createshapeless": {
-					Player player = (Player) sender;
 					player.beginConversation(ShapelessRecipeConversation.create(plugin, player));
 					break;
 				}
 				case "createshaped": {
-					Player player = (Player) sender;
 					player.beginConversation(ShapedRecipeConversation.create(plugin, player));
 					break;
 				}

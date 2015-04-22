@@ -68,4 +68,9 @@ public class Ingredient implements ConfigurationSerializable {
 		return isWildCard ? new Ingredient(material, itemmeta) : new Ingredient(material, data, itemmeta);
 	}
 
+	@Override
+	public String toString() {
+		return "Ingredient(Material: "+getMaterial()+", Data: "+getData()+", Meta: "+getItemMeta()+")";
+	}
+
 }
