@@ -24,14 +24,14 @@ public class RecipeAPI extends JavaPlugin {
 			t.printStackTrace();
 		}
 		RecipesStorage.getInstance().load(this);
-		for (CustomRecipe recipe : RecipesStorage.getInstance().getRecipes()) {
-			RecipeRegistry.register(recipe);
-		}
 	}
 
 	@Override
 	public void onEnable() {
 		getCommand("recipeapi").setExecutor(new Commands(this));
+		for (CustomRecipe recipe : RecipesStorage.getInstance().getRecipes()) {
+			RecipeRegistry.register(recipe);
+		}
 	}
 
 	@Override
