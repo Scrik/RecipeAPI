@@ -41,7 +41,7 @@ public class NMSDynamicRecipe implements IRecipe {
 		for (int i = 0; i < inv.getSize(); i++) {
 			items[i] = CraftItemStack.asCraftMirror(inv.getItem(i));
 		}
-		return apirecipe.canCraft((Player) inv.getOwner(), items);
+		return apirecipe.matches((Player) inv.getOwner(), items);
 	}
 
 	@Override
