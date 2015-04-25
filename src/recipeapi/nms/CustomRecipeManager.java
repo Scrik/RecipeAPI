@@ -19,6 +19,12 @@ public class CustomRecipeManager extends CraftingManager {
 		CustomRecipeManager.getInstance().recipes = recipes;
 	}
 
+	public static void uninject() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		List<IRecipe> recipes = CustomRecipeManager.getInstance().getRecipes();
+		Utils.setStaticFinalField(CraftingManager.class.getDeclaredField("a"), new CraftingManager());
+		CraftingManager.getInstance().recipes = recipes;
+	}
+
 	private static CustomRecipeManager instance = new CustomRecipeManager();
 
 	public static CustomRecipeManager getInstance() {
