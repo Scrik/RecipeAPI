@@ -63,6 +63,9 @@ public class CustomRecipeManager extends CraftingManager {
 
 	@Override
 	public ItemStack[] b(final InventoryCrafting inventorycrafting, final World world) {
+		if (inventorycrafting.currentRecipe != null && inventorycrafting.currentRecipe.a(inventorycrafting, world)) {
+			return inventorycrafting.currentRecipe.b(inventorycrafting);
+		}
 		for (final IRecipe irecipe : this.recipes) {
 			if (irecipe.a(inventorycrafting, world)) {
 				return irecipe.b(inventorycrafting);
