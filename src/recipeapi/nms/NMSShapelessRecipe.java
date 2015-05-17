@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 
 import recipeapi.api.recipes.Ingredient;
 import recipeapi.api.recipes.ShapelessRecipe;
-import net.minecraft.server.v1_8_R2.InventoryCrafting;
-import net.minecraft.server.v1_8_R2.ItemStack;
-import net.minecraft.server.v1_8_R2.ShapelessRecipes;
-import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R3.InventoryCrafting;
+import net.minecraft.server.v1_8_R3.ItemStack;
+import net.minecraft.server.v1_8_R3.ShapelessRecipes;
+import net.minecraft.server.v1_8_R3.World;
 
 public class NMSShapelessRecipe extends ShapelessRecipes {
 

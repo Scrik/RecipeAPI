@@ -4,9 +4,9 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 
-import net.minecraft.server.v1_8_R2.ItemStack;
+import net.minecraft.server.v1_8_R3.ItemStack;
 import recipeapi.api.recipes.Ingredient;
 
 public class Utils {

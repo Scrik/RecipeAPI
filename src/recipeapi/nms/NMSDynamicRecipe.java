@@ -3,15 +3,15 @@ package recipeapi.nms;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
 
 import recipeapi.api.recipes.DynamicRecipe;
-import net.minecraft.server.v1_8_R2.IRecipe;
-import net.minecraft.server.v1_8_R2.InventoryCrafting;
-import net.minecraft.server.v1_8_R2.ItemStack;
-import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R3.IRecipe;
+import net.minecraft.server.v1_8_R3.InventoryCrafting;
+import net.minecraft.server.v1_8_R3.ItemStack;
+import net.minecraft.server.v1_8_R3.World;
 
 public class NMSDynamicRecipe implements IRecipe {
 

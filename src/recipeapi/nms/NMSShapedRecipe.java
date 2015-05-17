@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 
 import recipeapi.api.recipes.Ingredient;
 import recipeapi.api.recipes.ShapedRecipe;
-import net.minecraft.server.v1_8_R2.InventoryCrafting;
-import net.minecraft.server.v1_8_R2.ItemStack;
-import net.minecraft.server.v1_8_R2.ShapedRecipes;
-import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R3.InventoryCrafting;
+import net.minecraft.server.v1_8_R3.ItemStack;
+import net.minecraft.server.v1_8_R3.ShapedRecipes;
+import net.minecraft.server.v1_8_R3.World;
 
 public class NMSShapedRecipe extends ShapedRecipes {
 

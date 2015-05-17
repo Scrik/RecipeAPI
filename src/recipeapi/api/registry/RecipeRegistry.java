@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
-import net.minecraft.server.v1_8_R2.IRecipe;
+import net.minecraft.server.v1_8_R3.IRecipe;
 import recipeapi.api.recipes.DynamicRecipe;
 import recipeapi.api.recipes.CustomRecipe;
 import recipeapi.api.recipes.ShapedRecipe;

@@ -3,13 +3,13 @@ package recipeapi.nms;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.craftbukkit.v1_8_R2.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
 
-import net.minecraft.server.v1_8_R2.CraftingManager;
-import net.minecraft.server.v1_8_R2.IRecipe;
-import net.minecraft.server.v1_8_R2.InventoryCrafting;
-import net.minecraft.server.v1_8_R2.ItemStack;
-import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R3.CraftingManager;
+import net.minecraft.server.v1_8_R3.IRecipe;
+import net.minecraft.server.v1_8_R3.InventoryCrafting;
+import net.minecraft.server.v1_8_R3.ItemStack;
+import net.minecraft.server.v1_8_R3.World;
 
 public class CustomRecipeManager extends CraftingManager {
 
