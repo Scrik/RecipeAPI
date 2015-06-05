@@ -19,6 +19,7 @@ public class Utils {
 		bitemstack.setItemMeta(ingr.getItemMeta());
 		ItemStack nmsstack = CraftItemStack.asNMSCopy(bitemstack);
 		nmsstack.setData(ingr.getData());
+		nmsstack.count = ingr.getAmount();
 		return nmsstack;
 	}
 

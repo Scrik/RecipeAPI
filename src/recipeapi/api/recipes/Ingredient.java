@@ -12,26 +12,22 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Ingredient implements ConfigurationSerializable {
 
 	public static Ingredient fromItemStack(ItemStack itemstack, boolean isWildCard) {
-		if (isWildCard) {
-			return new Ingredient(itemstack.getType(), itemstack.getItemMeta());
-		} else {
-			return new Ingredient(itemstack.getType(), itemstack.getDurability(), itemstack.getItemMeta());
-		}
+		return new Ingredient(itemstack, isWildCard);
 	}
 
 	private Material material;
 	private int data;
+	private int amount;
 	private ItemMeta itemmeta;
 
-	public Ingredient(Material material, ItemMeta itemmeta) {
-		this.material = material;
-		this.data = Short.MAX_VALUE;
-		this.itemmeta = Bukkit.getItemFactory().asMetaFor(itemmeta, material);
-	}
-
-	public Ingredient(Material material, int data, ItemMeta itemmeta) {
-		this(material, itemmeta);
-		this.data = data;
+	private Ingredient(ItemStack itemstack, boolean isWildCard) {
+		this.material = itemstack.getType();
+		this.data = isWildCard ? Short.MAX_VALUE : itemstack.getDurability();
+		this.amount = itemstack.getAmount();
+		if (amount <= 0) {
+			amount = 1;
+		}
+		this.itemmeta = Bukkit.getItemFactory().asMetaFor(itemstack.getItemMeta(), material);
 	}
 
 	public Material getMaterial() {
@@ -46,6 +42,10 @@ public class Ingredient implements ConfigurationSerializable {
 		return data;
 	}
 
+	public int getAmount() {
+		return amount;
+	}
+
 	public ItemMeta getItemMeta() {
 		return itemmeta;
 	}
@@ -56,6 +56,7 @@ public class Ingredient implements ConfigurationSerializable {
 		map.put("material", getMaterial().toString());
 		map.put("wildcard", isWildcardData());
 		map.put("data", getData());
+		map.put("amount", getAmount());
 		map.put("meta", getItemMeta());
 		return map;
 	}
@@ -64,8 +65,11 @@ public class Ingredient implements ConfigurationSerializable {
 		Material material = Material.getMaterial((String) map.get("material"));
 		boolean isWildCard = (boolean) map.get("wildcard");
 		int data = (int) map.get("data");
+		int amount = (int) map.get("amount");
 		ItemMeta itemmeta = (ItemMeta) map.get("meta");
-		return isWildCard ? new Ingredient(material, itemmeta) : new Ingredient(material, data, itemmeta);
+		ItemStack itemstack = new ItemStack(material, amount, (short) data);
+		itemstack.setItemMeta(itemmeta);
+		return new Ingredient(itemstack, isWildCard);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package recipeapi.nms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
 
@@ -63,7 +64,11 @@ public class CustomRecipeManager extends CraftingManager {
 
 	@Override
 	public ItemStack[] b(final InventoryCrafting inventorycrafting, final World world) {
-		if (inventorycrafting.currentRecipe != null && inventorycrafting.currentRecipe.a(inventorycrafting, world)) {
+		IRecipe currentRecipe = inventorycrafting.currentRecipe;
+		if (currentRecipe != null && currentRecipe.a(inventorycrafting, world)) {
+			if (currentRecipe instanceof CountAware) {
+				((CountAware) currentRecipe).removeMoreItems(inventorycrafting);
+			}
 			return inventorycrafting.currentRecipe.b(inventorycrafting);
 		}
 		for (final IRecipe irecipe : this.recipes) {
@@ -73,6 +78,9 @@ public class CustomRecipeManager extends CraftingManager {
 		}
 		for (final IRecipe irecipe : this.additionalRecipes) {
 			if (irecipe.a(inventorycrafting, world)) {
+				if (irecipe instanceof CountAware) {
+					((CountAware) irecipe).removeMoreItems(inventorycrafting);
+				}
 				return irecipe.b(inventorycrafting);
 			}
 		}
@@ -81,6 +89,19 @@ public class CustomRecipeManager extends CraftingManager {
 			aitemstack[i] = inventorycrafting.getItem(i);
 		}
 		return aitemstack;
+	}
+
+	public static boolean isMatching(ItemStack ingredient, ItemStack itemstack) {
+		if (ingredient == null && itemstack == null) {
+			return true;
+		}
+		if (ingredient == null || itemstack == null) {
+			return false;
+		}
+		return 	
+		itemstack.getItem() == ingredient.getItem() &&
+		(ingredient.getData() == 32767 || itemstack.getData() == ingredient.getData()) &&
+		Objects.equals(itemstack.getTag(), ingredient.getTag());
 	}
 
 }

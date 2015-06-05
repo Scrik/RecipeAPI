@@ -2,7 +2,6 @@ package recipeapi.nms;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 
@@ -13,7 +12,7 @@ import net.minecraft.server.v1_8_R3.ItemStack;
 import net.minecraft.server.v1_8_R3.ShapedRecipes;
 import net.minecraft.server.v1_8_R3.World;
 
-public class NMSShapedRecipe extends ShapedRecipes {
+public class NMSShapedRecipe extends ShapedRecipes implements CountAware {
 
 	static ItemStack[] getNMSIngredients(String[] shape, Map<Character, Ingredient> map) {
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
@@ -29,6 +28,8 @@ public class NMSShapedRecipe extends ShapedRecipes {
 	private int height;
 	private ItemStack[] items;
 
+	private boolean hascount = false;
+
 	public NMSShapedRecipe(ShapedRecipe apirecipe) {
 		super(
 			apirecipe.getShape()[0].length(),
@@ -39,16 +40,21 @@ public class NMSShapedRecipe extends ShapedRecipes {
 		this.width = apirecipe.getShape()[0].length();
 		this.height = apirecipe.getShape().length;
 		this.items = this.getIngredients().toArray(new ItemStack[0]);
+		for (ItemStack ingredient : items) {
+			if (ingredient != null && ingredient.count > 1) {
+				hascount = true;
+			}
+		}
 	}
 
 	@Override
 	public boolean a(final InventoryCrafting inventorycrafting, final World world) {
-		for (int i = 0; i <= 3 - this.width; ++i) {
-			for (int j = 0; j <= 3 - this.height; ++j) {
-				if (this.a(inventorycrafting, i, j, true)) {
+		for (int column = 0; column <= 3 - this.width; ++column) {
+			for (int row = 0; row <= 3 - this.height; ++row) {
+				if (this.a(inventorycrafting, column, row, true)) {
 					return true;
 				}
-				if (this.a(inventorycrafting, i, j, false)) {
+				if (this.a(inventorycrafting, column, row, false)) {
 					return true;
 				}
 			}
@@ -56,37 +62,77 @@ public class NMSShapedRecipe extends ShapedRecipes {
 		return false;
 	}
 
-	private boolean a(final InventoryCrafting inventorycrafting, final int i, final int j, final boolean flag) {
-		for (int k = 0; k < 3; ++k) {
-			for (int l = 0; l < 3; ++l) {
-				final int i2 = k - i;
-				final int j2 = l - j;
+	private boolean a(final InventoryCrafting inventorycrafting, final int columnshift, final int rowshift, final boolean leftToRight) {
+		for (int invColumn = 0; invColumn < 3; ++invColumn) {
+			for (int invRow = 0; invRow < 3; ++invRow) {
+				final int column = invColumn - columnshift;
+				final int row = invRow - rowshift;
 				ItemStack ingredient = null;
-				if (i2 >= 0 && j2 >= 0 && i2 < this.width && j2 < this.height) {
-					if (flag) {
-						ingredient = this.items[this.width - i2 - 1 + j2 * this.width];
+				if (column >= 0 && row >= 0 && column < this.width && row < this.height) {
+					if (leftToRight) {
+						ingredient = this.items[this.width - column - 1 + row * this.width];
 					} else {
-						ingredient = this.items[i2 + j2 * this.width];
+						ingredient = this.items[column + row * this.width];
 					}
 				}
-				final ItemStack itemstack = inventorycrafting.c(k, l);
+				final ItemStack itemstack = inventorycrafting.c(invColumn, invRow);
 				if (itemstack != null || ingredient != null) {
-					if ((itemstack == null && ingredient != null) || (itemstack != null && ingredient == null)) {
+					if (!CustomRecipeManager.isMatching(ingredient, itemstack)) {
 						return false;
 					}
-					if (ingredient.getItem() != itemstack.getItem()) {
-						return false;
-					}
-					if (ingredient.getData() != 32767 && ingredient.getData() != itemstack.getData()) {
-						return false;
-					}
-					if (!Objects.equals(ingredient.getTag(), itemstack.getTag())) {
+					if (itemstack.count < ingredient.count) {
 						return false;
 					}
 				}
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void removeMoreItems(final InventoryCrafting inventorycrafting) {
+		if (!hascount) {
+			return;
+		}
+		for (int column = 0; column <= 3 - this.width; ++column) {
+			for (int row = 0; row <= 3 - this.height; ++row) {
+				if (this.a(inventorycrafting, column, row, true)) {
+					removeItems(inventorycrafting, column, row, true);
+					return;
+				}
+				if (this.a(inventorycrafting, column, row, false)) {
+					removeItems(inventorycrafting, column, row, false);
+					return;
+				}
+			}
+		}
+	}
+
+	private void removeItems(final InventoryCrafting inventorycrafting, final int columnShift, final int rowShift, final boolean leftToRight) {
+		for (int invColumn = 0; invColumn < 3; ++invColumn) {
+			for (int invRow = 0; invRow < 3; ++invRow) {
+				final int column = invColumn - columnShift;
+				final int row = invRow - rowShift;
+				ItemStack ingredient = null;
+				if (column >= 0 && row >= 0 && column < this.width && row < this.height) {
+					if (leftToRight) {
+						ingredient = this.items[this.width - column - 1 + row * this.width];
+					} else {
+						ingredient = this.items[column + row * this.width];
+					}
+				}
+				if (ingredient == null) {
+					continue;
+				}
+				final ItemStack itemstack = inventorycrafting.c(invColumn, invRow);
+				int toremove = ingredient.count - 1;
+				if (itemstack.count > toremove) {
+					itemstack.count -= toremove;
+				} else {
+					inventorycrafting.setItem(invColumn + invRow * inventorycrafting.i(), null);
+				}
+			}
+		}
 	}
 
 }
