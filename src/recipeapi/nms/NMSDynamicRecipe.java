@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Recipe;
 
 import recipeapi.api.recipes.DynamicRecipe;
@@ -13,7 +14,7 @@ import net.minecraft.server.v1_8_R3.InventoryCrafting;
 import net.minecraft.server.v1_8_R3.ItemStack;
 import net.minecraft.server.v1_8_R3.World;
 
-public class NMSDynamicRecipe implements IRecipe {
+public class NMSDynamicRecipe implements IRecipe, CountAware {
 
 	private DynamicRecipe apirecipe;
 
@@ -74,6 +75,11 @@ public class NMSDynamicRecipe implements IRecipe {
 				return null;
 			}
 		};
+	}
+
+	@Override
+	public void removeMoreItems(InventoryCrafting inventorycrafting) {
+		apirecipe.preCraftInventoryModify((CraftingInventory) ((Player)inventorycrafting.getOwner()).getOpenInventory().getTopInventory());
 	}
 
 }
